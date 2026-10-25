@@ -1,398 +1,284 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Gifty — buat hadiah digital personal untuk orang spesialmu.">
-    <title>Gifty — A Little Gift, A Lot of Love</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff9ef">
+  <title>gifty — make someone's day</title>
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
-
-    <!-- File CSS -->
-    <link rel="stylesheet" href="style.css">
+  <!-- File CSS terpisah -->
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="root" id="appRoot">
+    <div class="wrap">
 
-    <!-- NAVBAR -->
-    <header class="navbar">
-        <a href="#" class="logo">
-            <span class="logo-icon">✳</span> gifty<span class="logo-dot">.</span>
-        </a>
-
-        <nav class="nav-links">
-            <a href="#templates">Templates</a>
-            <a href="#how-it-works">How it works</a>
-            <a href="#about">About Gifty</a>
-        </nav>
-
-        <a href="#templates" class="nav-button">Create a gift <span>↗</span></a>
-
-        <button class="menu-toggle" id="menuToggle" aria-label="Buka menu">
-            ☰
-        </button>
-    </header>
-
-    <main>
-
-        <!-- HERO SECTION -->
-        <section class="hero" id="about">
-            <div class="hero-content">
-                <div class="eyebrow">
-                    <span class="eyebrow-dot"></span>
-                    A LITTLE SOMETHING FOR SOMEONE SPECIAL
-                </div>
-
-                <h1>
-                    Make someone feel
-                    <span class="highlight">extra special.</span>
-                </h1>
-
-                <p class="hero-description">
-                    Turn your feelings into a little digital gift.
-                    Add your photos, write your message, choose a song,
-                    and make something they will never forget.
-                </p>
-
-                <div class="hero-actions">
-                    <a href="#templates" class="primary-button">
-                        Create your gift <span>↗</span>
-                    </a>
-                    <a href="#how-it-works" class="secondary-button">
-                        See how it works <span>↓</span>
-                    </a>
-                </div>
-
-                <div class="hero-note">
-                    <span class="note-stars">✦ ✦ ✦</span>
-                    Made with love, just for them.
-                </div>
-            </div>
-
-            <!-- Dekorasi preview hadiah -->
-            <div class="hero-visual">
-                <div class="visual-circle circle-one"></div>
-                <div class="visual-circle circle-two"></div>
-
-                <div class="floating-note note-top">
-                    <span>♡</span> made for you
-                </div>
-
-                <div class="gift-preview">
-                    <div class="preview-top">
-                        <span class="preview-label">A LITTLE GIFT FOR</span>
-                        <span class="preview-menu">•••</span>
-                    </div>
-
-                    <div class="preview-art">
-                        <div class="art-sun"></div>
-                        <div class="art-flower flower-one">✿</div>
-                        <div class="art-flower flower-two">✿</div>
-                        <div class="art-heart">♥</div>
-                        <div class="art-caption">you make life sweeter</div>
-                    </div>
-
-                    <div class="preview-bottom">
-                        <div>
-                            <span class="preview-small">A MESSAGE FROM</span>
-                            <h3>Someone who loves you</h3>
-                        </div>
-                        <span class="preview-heart">♡</span>
-                    </div>
-                </div>
-
-                <div class="floating-note note-bottom">
-                    <span>♫</span> your song, your story
-                </div>
-
-                <span class="decor decor-star">✳</span>
-                <span class="decor decor-sparkle">✦</span>
-                <span class="decor decor-heart">♡</span>
-            </div>
-        </section>
-
-        <!-- TEMPLATE SECTION -->
-        <section class="templates-section" id="templates">
-            <div class="section-heading">
-                <div>
-                    <span class="section-label">THE GIFT COLLECTION</span>
-                    <h2>A gift for every <span>feeling.</span></h2>
-                </div>
-
-                <p>
-                    Birthday, anniversary, or just because.
-                    Pick a vibe and make it yours.
-                </p>
-            </div>
-
-            <div class="template-filters">
-                <button class="filter-button active" data-filter="all">All gifts</button>
-                <button class="filter-button" data-filter="birthday">Birthday</button>
-                <button class="filter-button" data-filter="love">For someone</button>
-                <button class="filter-button" data-filter="friendship">Friendship</button>
-                <button class="filter-button" data-filter="just-because">Just because</button>
-            </div>
-
-            <div class="template-grid">
-
-                <!-- Template 1 -->
-                <article class="template-card" data-category="birthday">
-                    <div class="template-art art-birthday">
-                        <span class="art-tag">BEST SELLER</span>
-                        <div class="birthday-sun"></div>
-                        <span class="birthday-number">HBD!</span>
-                        <span class="birthday-cake">🎂</span>
-                        <span class="birthday-caption">another trip around the sun</span>
-                    </div>
-
-                    <div class="template-info">
-                        <div>
-                            <h3>Birthday Surprise</h3>
-                            <p>For their special day</p>
-                        </div>
-                        <button class="choose-template" data-template="Birthday Surprise" aria-label="Pilih Birthday Surprise">↗</button>
-                    </div>
-                </article>
-
-                <!-- Template 2 -->
-                <article class="template-card" data-category="love">
-                    <div class="template-art art-love">
-                        <span class="love-small">TO MY FAVORITE PERSON</span>
-                        <span class="love-heart">♥</span>
-                        <span class="love-title">just us.</span>
-                        <span class="love-caption">in every universe</span>
-                        <span class="love-sparkle">✦</span>
-                    </div>
-
-                    <div class="template-info">
-                        <div>
-                            <h3>Just Us</h3>
-                            <p>For your favorite person</p>
-                        </div>
-                        <button class="choose-template" data-template="Just Us" aria-label="Pilih Just Us">↗</button>
-                    </div>
-                </article>
-
-                <!-- Template 3 -->
-                <article class="template-card" data-category="friendship">
-                    <div class="template-art art-friendship">
-                        <span class="friendship-flower">✿</span>
-                        <span class="friendship-title">besties<br>forever-ish</span>
-                        <span class="friendship-note">thanks for existing ♡</span>
-                        <span class="friendship-sticker">BFF</span>
-                    </div>
-
-                    <div class="template-info">
-                        <div>
-                            <h3>Bestie Forever-ish</h3>
-                            <p>For your partner in crime</p>
-                        </div>
-                        <button class="choose-template" data-template="Bestie Forever-ish" aria-label="Pilih Bestie Forever-ish">↗</button>
-                    </div>
-                </article>
-
-                <!-- Template 4 -->
-                <article class="template-card" data-category="just-because">
-                    <div class="template-art art-flower">
-                        <span class="flower-label">A SMALL REMINDER</span>
-                        <span class="flower-big">✿</span>
-                        <span class="flower-title">you are<br>enough.</span>
-                        <span class="flower-caption">on your good and bad days</span>
-                    </div>
-
-                    <div class="template-info">
-                        <div>
-                            <h3>Little Reminder</h3>
-                            <p>Just because you matter</p>
-                        </div>
-                        <button class="choose-template" data-template="Little Reminder" aria-label="Pilih Little Reminder">↗</button>
-                    </div>
-                </article>
-
-                <!-- Template 5 -->
-                <article class="template-card" data-category="love">
-                    <div class="template-art art-polaroid">
-                        <span class="polaroid-label">OUR LITTLE MOMENTS</span>
-                        <div class="polaroid-frame">
-                            <span>♡</span>
-                            <small>your photo goes here</small>
-                        </div>
-                        <span class="polaroid-caption">remember this?</span>
-                    </div>
-
-                    <div class="template-info">
-                        <div>
-                            <h3>Little Memories</h3>
-                            <p>A collection of moments</p>
-                        </div>
-                        <button class="choose-template" data-template="Little Memories" aria-label="Pilih Little Memories">↗</button>
-                    </div>
-                </article>
-
-                <!-- Template 6 -->
-                <article class="template-card" data-category="just-because">
-                    <div class="template-art art-letter">
-                        <span class="letter-stamp">✉</span>
-                        <span class="letter-label">OPEN WHEN YOU NEED IT</span>
-                        <span class="letter-title">a letter<br>for you.</span>
-                        <span class="letter-caption">written with a little love</span>
-                    </div>
-
-                    <div class="template-info">
-                        <div>
-                            <h3>An Open Letter</h3>
-                            <p>Words from the heart</p>
-                        </div>
-                        <button class="choose-template" data-template="An Open Letter" aria-label="Pilih An Open Letter">↗</button>
-                    </div>
-                </article>
-
-            </div>
-        </section>
-
-        <!-- HOW IT WORKS -->
-        <section class="how-section" id="how-it-works">
-            <div class="how-heading">
-                <span class="section-label">SIMPLE AS THAT</span>
-                <h2>Three steps. <span>One lovely gift.</span></h2>
-                <p>No design skills needed. Just a little thought and feeling.</p>
-            </div>
-
-            <div class="steps-grid">
-                <article class="step-card">
-                    <div class="step-number">01</div>
-                    <div class="step-icon">▧</div>
-                    <h3>Pick your template</h3>
-                    <p>Choose a design that feels right for your person and your occasion.</p>
-                </article>
-
-                <article class="step-card">
-                    <div class="step-number">02</div>
-                    <div class="step-icon">✎</div>
-                    <h3>Make it personal</h3>
-                    <p>Add names, your own message, photos, and a song that means something.</p>
-                </article>
-
-                <article class="step-card">
-                    <div class="step-number">03</div>
-                    <div class="step-icon">♡</div>
-                    <h3>Share the love</h3>
-                    <p>Preview your creation and share your gift with someone special.</p>
-                </article>
-            </div>
-        </section>
-
-        <!-- CALL TO ACTION -->
-        <section class="cta-section">
-            <div class="cta-decoration">✳</div>
-            <span class="section-label">A LITTLE LOVE GOES A LONG WAY</span>
-            <h2>Someone deserves<br>a little <span>something.</span></h2>
-            <p>Make a gift that feels like you.</p>
-            <a href="#templates" class="primary-button cta-button">
-                Let's make a gift <span>↗</span>
-            </a>
-        </section>
-
-    </main>
-
-    <!-- FOOTER -->
-    <footer class="footer">
-        <a href="#" class="logo">
-            <span class="logo-icon">✳</span> gifty<span class="logo-dot">.</span>
-        </a>
-
-        <p>Little gifts, big feelings.</p>
-        <span class="footer-copy">© 2026 Gifty. Made with care.</span>
-    </footer>
-
-    <!-- MODAL: CUSTOMIZE GIFT -->
-    <div class="modal-overlay" id="customizeModal" hidden>
-        <div class="customize-modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
-            <button class="modal-close" id="closeModal" aria-label="Tutup">×</button>
-
-            <div class="modal-heading">
-                <span class="section-label">MAKE IT YOURS</span>
-                <h2 id="modalTitle">Create your gift.</h2>
-                <p>Fill in the little details to make this gift special.</p>
-            </div>
-
-            <form id="giftForm">
-                <div class="form-group">
-                    <label for="templateName">Selected template</label>
-                    <input type="text" id="templateName" name="templateName" readonly>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="senderName">Your name</label>
-                        <input type="text" id="senderName" name="senderName" placeholder="From..." required maxlength="50">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="receiverName">Their name</label>
-                        <input type="text" id="receiverName" name="receiverName" placeholder="To..." required maxlength="50">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="giftMessage">Your message</label>
-                    <textarea id="giftMessage" name="giftMessage" rows="4" placeholder="Write something from the heart..." required maxlength="1000"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="giftPhoto">Add a photo <span class="optional-label">optional</span></label>
-                    <input type="file" id="giftPhoto" name="giftPhoto" accept="image/*">
-                    <small>Your photo will be used in the gift preview.</small>
-                </div>
-
-                <div class="form-group">
-                    <label for="giftSong">Add a song link <span class="optional-label">optional</span></label>
-                    <input type="url" id="giftSong" name="giftSong" placeholder="https://open.spotify.com/...">
-                    <small>Paste a link to a song that means something to you.</small>
-                </div>
-
-                <button type="submit" class="primary-button form-submit">
-                    Preview my gift <span>↗</span>
-                </button>
-            </form>
+      <!-- Navbar -->
+      <header class="nav">
+        <div class="logo">
+          <span class="logo-icon">✳</span>
+          gifty<span style="color:#c48c2a">.</span>
         </div>
-    </div>
+        <div class="navright">
+          <button class="navlink" id="howNav">Cara kerja</button>
+          <button class="button" id="createNav">Buat hadiah ↗</button>
+        </div>
+      </header>
 
-    <!-- MODAL: GIFT PREVIEW -->
-    <div class="modal-overlay" id="previewModal" hidden>
-        <div class="preview-modal" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
-            <button class="modal-close" id="closePreview" aria-label="Tutup">×</button>
+      <!-- Hero -->
+      <section class="hero">
+        <div>
+          <span class="kicker">✦ small gifts, big feelings</span>
+          <h1>Make a little<br>magic <em>for them.</em></h1>
+          <p>
+            Bikin hadiah digital yang terasa personal. Pilih template,
+            tambahkan foto, lagu dan kata-kata kamu, lalu bagikan
+            kejutan kecil itu lewat satu link.
+          </p>
+          <div class="hero-actions">
+            <button class="button" id="browseBtn">Jelajahi template ↓</button>
+            <button class="button secondary" id="surpriseBtn">Pilihkan untukku ✧</button>
+          </div>
+        </div>
 
-            <span class="section-label">MADE JUST FOR YOU</span>
-            <h2 id="previewTitle">A little gift for you.</h2>
+        <div class="hero-art" aria-label="Ilustrasi kartu hadiah pastel">
+          <div class="art-stack">
+            <div class="art-card one"></div>
+            <div class="art-card two"></div>
+            <div class="art-card three">🎁</div>
+          </div>
+          <span class="float f1">made with love ♡</span>
+          <span class="float f2">just for you ✦</span>
+        </div>
+      </section>
 
-            <div class="gift-result" id="giftResult">
-                <p class="result-to">TO <span id="resultReceiver"></span></p>
-                <div class="result-photo" id="resultPhoto" hidden></div>
-                <p class="result-message" id="resultMessage"></p>
-                <p class="result-from">With love, <span id="resultSender"></span></p>
-            </div>
+      <!-- Galeri template -->
+      <section id="gallery">
+        <div class="section-head">
+          <div>
+            <h2>Find your kind of gift.</h2>
+            <p>Template kecil untuk momen yang berbeda-beda.</p>
+          </div>
+          <span class="pill" id="templateCount">8 TEMPLATES</span>
+        </div>
 
-            <div class="result-song" id="resultSong" hidden>
-                <span>♫</span>
-                <a id="resultSongLink" href="#" target="_blank" rel="noopener noreferrer">Listen to our song</a>
-            </div>
+        <div class="filters" id="filters">
+          <button class="filter active" data-filter="all">Semua hadiah</button>
+          <button class="filter" data-filter="love">For someone</button>
+          <button class="filter" data-filter="birthday">Birthday</button>
+          <button class="filter" data-filter="friends">Besties</button>
+          <button class="filter" data-filter="cute">Just because</button>
+        </div>
 
-            <p class="preview-notice">
-                This is a preview. Your gift has not been published or shared yet.
+        <!-- Kartu template dibuat oleh JavaScript -->
+        <div class="template-grid" id="templateGrid"></div>
+      </section>
+
+      <!-- Cara kerja -->
+      <section class="how" id="how">
+        <h2>Three tiny steps.</h2>
+        <div class="steps">
+          <article class="step">
+            <b>01</b>
+            <h3>Pilih template</h3>
+            <p>
+              Mulai dari surat, album foto, birthday cake, sampai mini
+              universe. Pilih yang paling cocok dengan orangnya.
             </p>
+          </article>
 
-            <div class="preview-actions">
-                <button type="button" class="secondary-button" id="editGift">Edit gift</button>
-                <button type="button" class="primary-button" id="downloadGift">Save gift details</button>
-            </div>
+          <article class="step">
+            <b>02</b>
+            <h3>Isi dengan ceritamu</h3>
+            <p>
+              Tambahkan nama, ucapan, foto, dan tautan lagu yang punya
+              arti khusus buat kalian.
+            </p>
+          </article>
+
+          <article class="step">
+            <b>03</b>
+            <h3>Kirim kejutan</h3>
+            <p>
+              Generate link personal dan kirim. Mereka bisa membuka
+              halaman hadiah dari browser mereka.
+            </p>
+          </article>
         </div>
-    </div>
+      </section>
 
-    <!-- File JavaScript -->
-    <script src="script.js"></script>
+      <!-- Footer -->
+      <footer class="footer">
+        <span>© 2026 gifty. Made for the people you love.</span>
+        <span>A little corner for thoughtful surprises ✦</span>
+      </footer>
+
+    </div>
+  </div>
+
+  <!-- Modal editor hadiah -->
+  <div
+    class="modal"
+    id="editorModal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="editorTitle"
+  >
+    <div class="modal-box">
+      <div class="modal-head">
+        <h2 id="editorTitle">Make it yours ✦</h2>
+        <button class="close" id="closeEditor" aria-label="Tutup">×</button>
+      </div>
+
+      <div class="editor">
+        <form id="giftForm">
+          <div class="form-field">
+            <label for="recipient">Nama penerima</label>
+            <input
+              id="recipient"
+              maxlength="70"
+              placeholder="Untuk siapa hadiah ini?"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="sender">Nama pengirim</label>
+            <input id="sender" maxlength="70" placeholder="Dari siapa?">
+          </div>
+
+          <div class="form-field">
+            <label for="headline">Judul kecil</label>
+            <input
+              id="headline"
+              maxlength="90"
+              placeholder="contoh: you're my favorite person"
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="message">Ucapan / pesan</label>
+            <textarea
+              id="message"
+              maxlength="1600"
+              placeholder="Tulis ucapanmu di sini..."
+              required
+            ></textarea>
+            <div class="help">
+              <span id="charCount">0</span>/1600 karakter
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="photo">Foto (opsional)</label>
+            <input id="photo" type="file" accept="image/*">
+            <div class="help">
+              Pilih satu foto. Gunakan ukuran kecil agar link tidak terlalu panjang.
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="song">Link lagu (opsional)</label>
+            <input
+              id="song"
+              type="url"
+              placeholder="https://open.spotify.com/..."
+            >
+            <div class="help">
+              Masukkan link Spotify, YouTube, atau layanan musik.
+              Lagu tidak diputar otomatis.
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="accent">Warna aksen</label>
+            <select id="accent">
+              <option value="#f5c957">Butter yellow</option>
+              <option value="#f3c7d0">Soft pink</option>
+              <option value="#c8d9bf">Sage green</option>
+              <option value="#d9c9ef">Lilac dream</option>
+              <option value="#f0c5a2">Peachy</option>
+            </select>
+          </div>
+
+          <button type="submit" class="button" style="width:100%">
+            Generate hadiah &amp; link ↗
+          </button>
+
+          <p class="help">
+            Demo ini membuat link dari data yang kamu isi di browser.
+            Belum ada akun, database, atau penyimpanan cloud.
+          </p>
+        </form>
+
+        <!-- Preview langsung -->
+        <div>
+          <div class="preview" id="livePreview">
+            <div class="prev-tag" id="prevTag">a little surprise</div>
+            <div class="prev-emoji" id="prevEmoji">🎁</div>
+            <h3 id="prevTitle">A little gift for you</h3>
+            <div class="prev-message" id="prevMessage">
+              Your lovely message will appear here.
+            </div>
+            <img id="prevPhoto" hidden alt="Foto pilihan">
+            <div class="prev-sign" id="prevSign">— with love</div>
+          </div>
+
+          <div class="modal-actions">
+            <button type="button" class="button secondary" id="previewOpen">
+              Preview hadiah ↗
+            </button>
+            <button
+              type="button"
+              class="button secondary"
+              id="copyLink"
+              disabled
+            >
+              Salin link
+            </button>
+          </div>
+
+          <p class="song-status" id="linkStatus">
+            Preview akan berubah saat kamu mengisi form.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Halaman hadiah yang dibuka melalui link -->
+  <div class="public-view" id="publicView">
+    <button class="back-home" id="backHome">← ke gifty</button>
+
+    <div class="public-inner">
+      <article class="public-card">
+        <div class="public-emoji" id="publicEmoji">🎁</div>
+        <div class="prev-tag" id="publicTag">A LITTLE SURPRISE</div>
+        <h2 id="publicTitle">A little gift for you</h2>
+        <img id="publicPhoto" hidden alt="Foto hadiah">
+        <p id="publicMessage"></p>
+        <p id="publicSign" style="font-weight:850"></p>
+
+        <a
+          id="publicSong"
+          target="_blank"
+          rel="noopener noreferrer"
+          style="display:none;color:#6d5224;font-weight:850"
+        >
+          ♫ Dengarkan lagu pilihan ↗
+        </a>
+
+        <div>
+          <button class="music-btn" id="publicReplay">Baca lagi ✦</button>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <!-- Notifikasi -->
+  <div class="toast" id="toast" role="status"></div>
+
+  <!-- File JavaScript terpisah -->
+  <script src="script.js"></script>
 </body>
 </html>
-```
