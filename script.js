@@ -1,10 +1,10 @@
-
-/* =========================================
-   GIFTY — JavaScript
-   Template, editor, preview, dan gift link
-========================================= */
-
+/* GIFTY — JavaScript
+   Mengatur galeri, filter, editor, preview, upload foto, dan link hadiah.
+*/
 (() => {
+  "use strict";
+
+  // Fungsi singkat untuk memilih elemen HTML.
   const $ = (selector) => document.querySelector(selector);
   const $$ = (selector) => document.querySelectorAll(selector);
 
@@ -14,6 +14,7 @@
   const publicView = $("#publicView");
   const toast = $("#toast");
 
+  // Data template yang tersedia di galeri.
   const templates = [
     {
       id: "love",
@@ -23,9 +24,8 @@
       emoji: "💌",
       color: "#ffd6df",
       headline: "A little letter for you",
-      message:
-        "There's something about you that makes ordinary days feel special. Thank you for being you.",
-      tag: "For someone special",
+      message: "There's something about you that makes ordinary days feel special. Thank you for being you.",
+      tag: "For someone special"
     },
     {
       id: "birthday",
@@ -35,9 +35,8 @@
       emoji: "🎂",
       color: "#ffe58a",
       headline: "Happy Birthday!",
-      message:
-        "Today is all about you. I hope your day is filled with little things that make you smile.",
-      tag: "Birthday",
+      message: "Today is all about you. I hope your day is filled with little things that make you smile.",
+      tag: "Birthday"
     },
     {
       id: "memory",
@@ -47,9 +46,8 @@
       emoji: "📸",
       color: "#dce8d5",
       headline: "Our little memories",
-      message:
-        "Some of my favorite moments are the simplest ones, especially when you're there.",
-      tag: "Our memories",
+      message: "Some of my favorite moments are the simplest ones, especially when you're there.",
+      tag: "Our memories"
     },
     {
       id: "mixtape",
@@ -59,9 +57,8 @@
       emoji: "🎧",
       color: "#e6dcf7",
       headline: "Songs that remind me of you",
-      message:
-        "Every song has a little piece of a memory. Here's a few that made me think of you.",
-      tag: "Press play",
+      message: "Every song has a little piece of a memory. Here's a few that made me think of you.",
+      tag: "Press play"
     },
     {
       id: "surprise",
@@ -71,9 +68,8 @@
       emoji: "🎁",
       color: "#ffd6df",
       headline: "A little surprise!",
-      message:
-        "You deserve something nice today. So here's a little reminder that someone is thinking of you.",
-      tag: "Open me",
+      message: "You deserve something nice today. So here's a little reminder that someone is thinking of you.",
+      tag: "Open me"
     },
     {
       id: "bestie",
@@ -83,9 +79,8 @@
       emoji: "🏆",
       color: "#ffe58a",
       headline: "Certified Bestie",
-      message:
-        "Awarded for being an absolute icon, making ordinary days fun, and being one of my favorite people.",
-      tag: "Bestie approved",
+      message: "Awarded for being an absolute icon, making ordinary days fun, and being one of my favorite people.",
+      tag: "Bestie approved"
     },
     {
       id: "universe",
@@ -95,9 +90,8 @@
       emoji: "🌙",
       color: "#e6dcf7",
       headline: "You are your own universe",
-      message:
-        "I hope you remember how much light you bring into the little corners of this world.",
-      tag: "Made of stardust",
+      message: "I hope you remember how much light you bring into the little corners of this world.",
+      tag: "Made of stardust"
     },
     {
       id: "sunshine",
@@ -107,51 +101,35 @@
       emoji: "☀️",
       color: "#ffe58a",
       headline: "A little sunshine for you",
-      message:
-        "If today feels a little heavy, here's a small reminder that brighter moments can still find you.",
-      tag: "You got this",
-    },
+      message: "If today feels a little heavy, here's a small reminder that brighter moments can still find you.",
+      tag: "You got this"
+    }
   ];
 
+  // Menyimpan keadaan template dan hadiah yang sedang dibuat.
   let selectedTemplate = templates[0];
   let selectedColor = selectedTemplate.color;
   let photoData = "";
-  let currentFilter = "all";
+  let generatedGiftLink = "";
+  let toastTimer;
 
-  /* =========================================
-     HELPER FUNCTIONS
-  ========================================= */
-
+  // Menampilkan notifikasi singkat.
   function showToast(message) {
     if (!toast) return;
 
     toast.textContent = message;
     toast.classList.add("show");
 
-    clearTimeout(showToast.timer);
+    window.clearTimeout(toastTimer);
 
-    showToast.timer = setTimeout(() => {
+    toastTimer = window.setTimeout(() => {
       toast.classList.remove("show");
     }, 2600);
   }
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, (char) => {
-      const entities = {
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;",
-      };
-
-      return entities[char];
-    });
-  }
-
+  // Mengubah data hadiah menjadi Base64 agar dapat disimpan dalam URL.
   function encodeData(data) {
-    const json = JSON.stringify(data);
-    const bytes = new TextEncoder().encode(json);
+    const bytes = new TextEncoder().encode(JSON.stringify(data));
 
     let binary = "";
 
@@ -165,6 +143,7 @@
       .replace(/=+$/g, "");
   }
 
+  // Membaca kembali data hadiah dari URL.
   function decodeData(encoded) {
     const base64 = encoded
       .replace(/-/g, "+")
@@ -176,557 +155,538 @@
     );
 
     const binary = atob(padded);
-    const bytes = Uint8Array.from(
-      binary,
-      (char) => char.charCodeAt(0)
-    );
+
+    const bytes = Uint8Array.from(binary, (char) => {
+      return char.charCodeAt(0);
+    });
 
     return JSON.parse(new TextDecoder().decode(bytes));
   }
 
+  // Mengambil data yang diisi pengguna pada form.
   function getGiftData() {
     return {
       templateId: selectedTemplate.id,
-      recipient: $("#recipient")?.value.trim() || "Someone special",
-      sender: $("#sender")?.value.trim() || "Someone who cares",
-      headline:
-        $("#headline")?.value.trim() || selectedTemplate.headline,
-      message:
-        $("#message")?.value.trim() || selectedTemplate.message,
+      recipient: $("#recipient")?.value.trim() || "",
+      sender: $("#sender")?.value.trim() || "",
+      headline: $("#headline")?.value.trim() || selectedTemplate.headline,
+      message: $("#message")?.value.trim() || "",
       song: $("#song")?.value.trim() || "",
       color: selectedColor,
       photo: photoData,
-      emoji: selectedTemplate.emoji,
+      emoji: selectedTemplate.emoji
     };
   }
 
-  /* =========================================
-     RENDER TEMPLATE GALLERY
-  ========================================= */
-
+  // Menampilkan template pada galeri.
   function renderTemplates(filter = "all") {
     if (!templateGrid) return;
 
-    currentFilter = filter;
+    const filtered = filter === "all"
+      ? templates
+      : templates.filter((item) => item.category === filter);
 
-    const filteredTemplates =
-      filter === "all"
-        ? templates
-        : templates.filter(
-            (template) => template.category === filter
-          );
+    const count = $("#templateCount");
 
-    if (filteredTemplates.length === 0) {
-      templateGrid.innerHTML = `
-        <div class="empty-state">
-          <p>No templates found.</p>
-        </div>
-      `;
+    if (count) {
+      count.textContent =
+        `${filtered.length} TEMPLATE${filtered.length === 1 ? "" : "S"}`;
+    }
+
+    // Tampilkan pesan jika tidak ada template.
+    if (!filtered.length) {
+      templateGrid.innerHTML =
+        '<div class="empty-state">Template tidak ditemukan.</div>';
       return;
     }
 
-    templateGrid.innerHTML = filteredTemplates
-      .map(
-        (template) => `
-          <article class="template-card">
-            <div
-              class="template-art"
-              style="background:${template.color}"
-            >
-              <span>${template.emoji}</span>
-            </div>
+    // Membuat kartu template.
+    templateGrid.innerHTML = filtered.map((item) => `
+      <article class="template-card">
+        <div class="template-art" style="background:${item.color}">
+          <span aria-hidden="true">${item.emoji}</span>
+        </div>
 
-            <div class="template-info">
-              <h3>${escapeHTML(template.title)}</h3>
+        <div class="template-info">
+          <h3>${item.title}</h3>
+          <p>${item.description}</p>
 
-              <p>${escapeHTML(template.description)}</p>
+          <div class="template-bottom">
+            <span class="template-tag">${item.tag}</span>
 
-              <div class="template-bottom">
-                <span class="template-tag">
-                  ${escapeHTML(template.tag)}
-                </span>
-
-                <button
-                  type="button"
-                  data-template="${template.id}"
-                >
-                  Make yours
-                </button>
-              </div>
-            </div>
-          </article>
-        `
-      )
-      .join("");
+            <button type="button" data-template="${item.id}">
+              Make yours
+            </button>
+          </div>
+        </div>
+      </article>
+    `).join("");
   }
 
-  /* =========================================
-     TEMPLATE FILTERS
-  ========================================= */
-
-  $$(".filter-btn").forEach((button) => {
+  // Mengatur filter galeri ketika tombol filter diklik.
+  $$("#filters [data-filter]").forEach((button) => {
     button.addEventListener("click", () => {
-      $$(".filter-btn").forEach((item) => {
-        item.classList.remove("active");
+      $$("#filters [data-filter]").forEach((item) => {
+        item.classList.toggle("active", item === button);
       });
-
-      button.classList.add("active");
 
       renderTemplates(button.dataset.filter || "all");
     });
   });
 
-  /* =========================================
-     OPEN AND CLOSE EDITOR
-  ========================================= */
+  // Memperbarui preview berdasarkan isi form.
+  function updatePreview() {
+    const data = getGiftData();
 
+    const title = $("#prevTitle");
+    const message = $("#prevMessage");
+    const emoji = $("#prevEmoji");
+    const tag = $("#prevTag");
+    const sign = $("#prevSign");
+    const preview = $("#livePreview");
+    const image = $("#prevPhoto");
+    const count = $("#charCount");
+
+    if (title) {
+      title.textContent = data.headline || "A little gift for you";
+    }
+
+    if (message) {
+      message.textContent =
+        data.message || "Your lovely message will appear here.";
+    }
+
+    if (emoji) {
+      emoji.textContent = data.emoji;
+    }
+
+    if (tag) {
+      tag.textContent = `For ${data.recipient || "someone special"}`;
+    }
+
+    if (sign) {
+      sign.textContent = data.sender
+        ? `— with love, ${data.sender}`
+        : "— with love";
+    }
+
+    if (preview) {
+      preview.style.backgroundColor = selectedColor;
+    }
+
+    if (count) {
+      count.textContent = String($("#message")?.value.length || 0);
+    }
+
+    // Tampilkan foto jika pengguna sudah memilihnya.
+    if (image) {
+      image.hidden = !photoData;
+
+      if (photoData) {
+        image.src = photoData;
+      } else {
+        image.removeAttribute("src");
+      }
+    }
+  }
+
+  // Menyesuaikan warna template dengan pilihan warna pada form.
+  function colorToAccentValue(color) {
+    const options = [
+      "#f5c957",
+      "#f3c7d0",
+      "#c8d9bf",
+      "#d9c9ef",
+      "#f0c5a2"
+    ];
+
+    const map = {
+      "#ffe58a": "#f5c957",
+      "#ffd6df": "#f3c7d0",
+      "#dce8d5": "#c8d9bf",
+      "#e6dcf7": "#d9c9ef"
+    };
+
+    return map[color] || (
+      options.includes(color) ? color : "#f5c957"
+    );
+  }
+
+  // Membuka editor dan memuat template yang dipilih.
   function openEditor(templateId) {
-    const template =
-      templates.find((item) => item.id === templateId) ||
-      templates[0];
+    selectedTemplate =
+      templates.find((item) => item.id === templateId) || templates[0];
 
-    selectedTemplate = template;
-    selectedColor = template.color;
+    selectedColor = selectedTemplate.color;
     photoData = "";
+    generatedGiftLink = "";
 
     if (giftForm) {
       giftForm.reset();
     }
 
-    const recipient = $("#recipient");
-    const sender = $("#sender");
-    const headline = $("#headline");
-    const message = $("#message");
-    const photo = $("#previewPhoto");
+    $("#recipient").value = "";
+    $("#sender").value = "";
+    $("#headline").value = selectedTemplate.headline;
+    $("#message").value = selectedTemplate.message;
+    $("#song").value = "";
+    $("#accent").value = colorToAccentValue(selectedColor);
 
-    if (recipient) recipient.value = "";
-    if (sender) sender.value = "";
-    if (headline) headline.value = template.headline;
-    if (message) message.value = template.message;
+    $("#prevPhoto").hidden = true;
+    $("#prevPhoto").removeAttribute("src");
 
-    if (photo) {
-      photo.src = "";
-      photo.classList.remove("visible");
-    }
+    $("#linkResult").hidden = true;
+    $("#copyLink").disabled = true;
 
-    const song = $("#song");
-    if (song) song.value = "";
+    $("#linkStatus").textContent =
+      "Preview akan berubah saat kamu mengisi form.";
 
-    $$(".color-option").forEach((option) => {
-      const color = option.dataset.color;
+    editorModal?.classList.add("show");
+    editorModal?.setAttribute("aria-hidden", "false");
 
-      option.classList.toggle(
-        "active",
-        color === selectedColor
-      );
-    });
-
-    if (editorModal) {
-      editorModal.classList.add("show");
-      editorModal.setAttribute("aria-hidden", "false");
-      document.body.style.overflow = "hidden";
-    }
+    document.body.classList.add("modal-open");
 
     updatePreview();
+
+    $("#recipient")?.focus();
   }
 
+  // Menutup editor hadiah.
   function closeEditor() {
-    if (editorModal) {
-      editorModal.classList.remove("show");
-      editorModal.setAttribute("aria-hidden", "true");
-    }
+    editorModal?.classList.remove("show");
+    editorModal?.setAttribute("aria-hidden", "true");
 
-    document.body.style.overflow = "";
+    document.body.classList.remove("modal-open");
   }
 
-  if (templateGrid) {
-    templateGrid.addEventListener("click", (event) => {
-      const button = event.target.closest("[data-template]");
+  // Klik tombol pada kartu template untuk membuka editor.
+  templateGrid?.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-template]");
 
-      if (!button) return;
-
+    if (button) {
       openEditor(button.dataset.template);
-    });
-  }
-
-  $$("[data-close-editor]").forEach((button) => {
-    button.addEventListener("click", closeEditor);
+    }
   });
 
-  if (editorModal) {
-    editorModal.addEventListener("click", (event) => {
-      if (event.target === editorModal) {
-        closeEditor();
-      }
-    });
-  }
+  // Tombol navigasi dan tombol aksi utama.
+  $("#createNav")?.addEventListener("click", () => {
+    openEditor(selectedTemplate.id);
+  });
 
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
+  $("#browseBtn")?.addEventListener("click", () => {
+    $("#gallery")?.scrollIntoView({ behavior: "smooth" });
+  });
+
+  $("#howNav")?.addEventListener("click", () => {
+    $("#how")?.scrollIntoView({ behavior: "smooth" });
+  });
+
+  // Memilih template secara acak.
+  $("#surpriseBtn")?.addEventListener("click", () => {
+    const random =
+      templates[Math.floor(Math.random() * templates.length)];
+
+    openEditor(random.id);
+  });
+
+  // Menutup editor dengan tombol tutup.
+  $("#closeEditor")?.addEventListener("click", closeEditor);
+
+  // Menutup editor jika area gelap di luar modal diklik.
+  editorModal?.addEventListener("click", (event) => {
+    if (event.target === editorModal) {
       closeEditor();
     }
   });
 
-  /* =========================================
-     LIVE PREVIEW
-  ========================================= */
-
-  function updatePreview() {
-    const data = getGiftData();
-
-    const previewRecipient = $("#previewRecipient");
-    const previewHeadline = $("#previewHeadline");
-    const previewMessage = $("#previewMessage");
-    const previewEmoji = $("#previewEmoji");
-    const previewCard = $("#previewCard");
-
-    if (previewRecipient) {
-      previewRecipient.textContent = data.recipient;
-    }
-
-    if (previewHeadline) {
-      previewHeadline.textContent = data.headline;
-    }
-
-    if (previewMessage) {
-      previewMessage.textContent = data.message;
-    }
-
-    if (previewEmoji) {
-      previewEmoji.textContent = data.emoji;
-    }
-
-    if (previewCard) {
-      previewCard.style.backgroundColor = data.color;
-    }
-
-    const previewPhoto = $("#previewPhoto");
-
-    if (previewPhoto) {
-      if (photoData) {
-        previewPhoto.src = photoData;
-        previewPhoto.classList.add("visible");
-      } else {
-        previewPhoto.src = "";
-        previewPhoto.classList.remove("visible");
-      }
-    }
-  }
-
-  [
-    "#recipient",
-    "#sender",
-    "#headline",
-    "#message",
-    "#song",
-  ].forEach((selector) => {
-    const input = $(selector);
-
-    if (input) {
-      input.addEventListener("input", updatePreview);
+  // Menutup editor menggunakan tombol Escape.
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Escape" &&
+      editorModal?.classList.contains("show")
+    ) {
+      closeEditor();
     }
   });
 
-  /* =========================================
-     COLOR PICKER
-  ========================================= */
-
-  $$(".color-option").forEach((option) => {
-    option.addEventListener("click", () => {
-      selectedColor = option.dataset.color;
-
-      $$(".color-option").forEach((item) => {
-        item.classList.toggle("active", item === option);
-      });
-
-      updatePreview();
+  // Perbarui preview setiap kali pengguna mengetik.
+  ["#recipient", "#sender", "#headline", "#message", "#song"]
+    .forEach((selector) => {
+      $(selector)?.addEventListener("input", updatePreview);
     });
+
+  // Mengubah warna preview.
+  $("#accent")?.addEventListener("change", (event) => {
+    selectedColor = event.target.value;
+    updatePreview();
   });
 
-  /* =========================================
-     PHOTO UPLOAD
-  ========================================= */
+  // Membaca foto dari komputer pengguna.
+  $("#photo")?.addEventListener("change", (event) => {
+    const file = event.target.files?.[0];
 
-  const photoInput = $("#photo");
-
-  if (photoInput) {
-    photoInput.addEventListener("change", (event) => {
-      const file = event.target.files?.[0];
-
-      if (!file) {
-        photoData = "";
-        updatePreview();
-        return;
-      }
-
-      if (!file.type.startsWith("image/")) {
-        showToast("Please choose an image file.");
-        photoInput.value = "";
-        return;
-      }
-
-      if (file.size > 600 * 1024) {
-        showToast("Please choose a photo under 600 KB.");
-        photoInput.value = "";
-        return;
-      }
-
-      const reader = new FileReader();
-
-      reader.onload = () => {
-        photoData = reader.result;
-        updatePreview();
-      };
-
-      reader.onerror = () => {
-        showToast("Couldn't read that photo. Try another one.");
-      };
-
-      reader.readAsDataURL(file);
-    });
-  }
-
-  /* =========================================
-     PREVIEW BUTTON
-  ========================================= */
-
-  const previewOpen = $("#previewOpen");
-
-  if (previewOpen) {
-    previewOpen.addEventListener("click", () => {
+    if (!file) {
+      photoData = "";
       updatePreview();
-      showToast("Your preview is up to date!");
-    });
-  }
+      return;
+    }
 
-  /* =========================================
-     GENERATE GIFT LINK
-  ========================================= */
+    // Pastikan file yang dipilih berupa gambar.
+    if (!file.type.startsWith("image/")) {
+      showToast("Pilih file gambar yang valid.");
+      event.target.value = "";
+      return;
+    }
 
+    // Batasi ukuran foto agar link tidak terlalu panjang.
+    if (file.size > 600 * 1024) {
+      showToast("Ukuran foto maksimal 600 KB.");
+      event.target.value = "";
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      photoData =
+        typeof reader.result === "string" ? reader.result : "";
+
+      updatePreview();
+    };
+
+    reader.onerror = () => {
+      showToast("Foto tidak bisa dibaca. Coba pilih foto lain.");
+    };
+
+    reader.readAsDataURL(file);
+  });
+
+  // Memperbarui preview melalui tombol preview.
+  $("#previewOpen")?.addEventListener("click", () => {
+    updatePreview();
+    showToast("Preview sudah diperbarui.");
+  });
+
+  // Membuat link hadiah dari URL halaman saat ini.
   function createGiftLink(data) {
-    const encoded = encodeData(data);
     const url = new URL(window.location.href);
 
-    url.hash = `gift=${encoded}`;
+    url.hash = `gift=${encodeData(data)}`;
 
     return url.href;
   }
 
-  if (giftForm) {
-    giftForm.addEventListener("submit", (event) => {
-      event.preventDefault();
+  // Memproses form ketika tombol generate ditekan.
+  giftForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-      const data = getGiftData();
+    const data = getGiftData();
 
-      if (!data.recipient) {
-        showToast("Add a recipient first.");
-        $("#recipient")?.focus();
-        return;
-      }
+    // Validasi nama penerima.
+    if (!data.recipient) {
+      showToast("Isi nama penerima dulu.");
+      $("#recipient")?.focus();
+      return;
+    }
 
-      if (!data.headline) {
-        showToast("Give your gift a headline.");
-        $("#headline")?.focus();
-        return;
-      }
+    // Validasi judul.
+    if (!data.headline) {
+      showToast("Isi judul hadiah dulu.");
+      $("#headline")?.focus();
+      return;
+    }
 
-      if (!data.message) {
-        showToast("Write a little message first.");
-        $("#message")?.focus();
-        return;
-      }
+    // Validasi pesan.
+    if (!data.message) {
+      showToast("Tulis pesan hadiah dulu.");
+      $("#message")?.focus();
+      return;
+    }
 
-      const link = createGiftLink(data);
-
-      const linkInput = $("#generatedLink");
-
-      if (linkInput) {
-        linkInput.value = link;
-      }
-
-      const linkResult = $("#linkResult");
-
-      if (linkResult) {
-        linkResult.hidden = false;
-      }
-
-      showToast("Your gift link is ready!");
-    });
-  }
-
-  /* =========================================
-     COPY GIFT LINK
-  ========================================= */
-
-  const copyLinkButton = $("#copyLink");
-
-  if (copyLinkButton) {
-    copyLinkButton.addEventListener("click", async () => {
-      const linkInput = $("#generatedLink");
-      const link = linkInput?.value;
-
-      if (!link) {
-        showToast("Create your gift link first.");
-        return;
-      }
-
+    // Validasi URL lagu jika diisi.
+    if (data.song) {
       try {
-        await navigator.clipboard.writeText(link);
-        showToast("Gift link copied!");
-      } catch (error) {
-        if (linkInput) {
-          linkInput.focus();
-          linkInput.select();
+        const songURL = new URL(data.song);
 
-          const copied = document.execCommand("copy");
-
-          showToast(
-            copied
-              ? "Gift link copied!"
-              : "Copy the selected link manually."
-          );
+        if (!["http:", "https:"].includes(songURL.protocol)) {
+          throw new Error("Invalid URL");
         }
-      }
-    });
-  }
-
-  /* =========================================
-     DISPLAY PUBLIC GIFT FROM URL
-  ========================================= */
-
-  function showPublicGift(data) {
-    if (!publicView) return;
-
-    const publicCard = $("#publicCard");
-    const publicEmoji = $("#publicEmoji");
-    const publicHeadline = $("#publicHeadline");
-    const publicRecipient = $("#publicRecipient");
-    const publicMessage = $("#publicMessage");
-    const publicPhoto = $("#publicPhoto");
-    const publicSender = $("#publicSender");
-    const publicSong = $("#publicSong");
-
-    if (publicEmoji) {
-      publicEmoji.textContent = data.emoji || "🎁";
-    }
-
-    if (publicHeadline) {
-      publicHeadline.textContent = data.headline || "A little gift";
-    }
-
-    if (publicRecipient) {
-      publicRecipient.textContent =
-        `For ${data.recipient || "someone special"}`;
-    }
-
-    if (publicMessage) {
-      publicMessage.textContent = data.message || "";
-    }
-
-    if (publicCard) {
-      publicCard.style.backgroundColor =
-        data.color || "#ffd6df";
-    }
-
-    if (publicPhoto) {
-      if (data.photo) {
-        publicPhoto.src = data.photo;
-        publicPhoto.classList.add("visible");
-      } else {
-        publicPhoto.src = "";
-        publicPhoto.classList.remove("visible");
+      } catch {
+        showToast("Link lagu harus berupa URL yang valid.");
+        $("#song")?.focus();
+        return;
       }
     }
 
-    if (publicSender) {
-      publicSender.textContent = data.sender
-        ? `made with love by ${data.sender}`
-        : "";
+    // Buat link dan tampilkan hasilnya.
+    generatedGiftLink = createGiftLink(data);
+
+    $("#generatedLink").value = generatedGiftLink;
+    $("#linkResult").hidden = false;
+    $("#copyLink").disabled = false;
+
+    $("#linkStatus").textContent =
+      "Link berhasil dibuat. Salin untuk membagikannya.";
+
+    showToast("Link hadiah berhasil dibuat.");
+  });
+
+  // Menyalin link hadiah ke clipboard.
+  $("#copyLink")?.addEventListener("click", async () => {
+    if (!generatedGiftLink) {
+      showToast("Buat link hadiah terlebih dahulu.");
+      return;
     }
-
-    if (publicSong) {
-      if (data.song) {
-        try {
-          const songURL = new URL(data.song);
-
-          if (
-            songURL.protocol === "https:" ||
-            songURL.protocol === "http:"
-          ) {
-            publicSong.href = songURL.href;
-            publicSong.hidden = false;
-          } else {
-            publicSong.hidden = true;
-          }
-        } catch (error) {
-          publicSong.hidden = true;
-        }
-      } else {
-        publicSong.hidden = true;
-      }
-    }
-
-    publicView.classList.add("show");
-    document.body.style.overflow = "hidden";
-
-    const mainContent = $("#mainContent");
-
-    if (mainContent) {
-      mainContent.hidden = true;
-    }
-
-    document.title = `${data.headline || "A little gift"} — Gifty`;
-  }
-
-  function checkGiftURL() {
-    const hash = window.location.hash;
-
-    if (!hash.startsWith("#gift=")) return;
 
     try {
-      const encoded = hash.slice("#gift=".length);
+      await navigator.clipboard.writeText(generatedGiftLink);
+
+      showToast("Link hadiah berhasil disalin.");
+    } catch {
+      // Cara alternatif jika Clipboard API tidak tersedia.
+      const input = $("#generatedLink");
+
+      input?.focus();
+      input?.select();
+
+      let copied = false;
+
+      try {
+        copied = document.execCommand("copy");
+      } catch {
+        copied = false;
+      }
+
+      showToast(
+        copied
+          ? "Link hadiah berhasil disalin."
+          : "Pilih dan salin link secara manual."
+      );
+    }
+  });
+
+  // Menampilkan hadiah ketika link dibuka penerima.
+  function showPublicGift(data) {
+    $("#mainContent").hidden = true;
+
+    publicView.hidden = false;
+    publicView.classList.add("show");
+
+    $("#publicEmoji").textContent = data.emoji || "🎁";
+    $("#publicTag").textContent = "A LITTLE SURPRISE";
+
+    $("#publicRecipient").textContent =
+      `Untuk ${data.recipient || "seseorang spesial"}`;
+
+    $("#publicTitle").textContent =
+      data.headline || "A little gift for you";
+
+    $("#publicMessage").textContent = data.message || "";
+
+    $("#publicSign").textContent = data.sender
+      ? `— with love, ${data.sender}`
+      : "— with love";
+
+    $("#publicCard").style.backgroundColor =
+      data.color || "#ffd6df";
+
+    // Tampilkan foto pada halaman hadiah.
+    const image = $("#publicPhoto");
+
+    image.hidden = !data.photo;
+
+    if (data.photo) {
+      image.src = data.photo;
+    } else {
+      image.removeAttribute("src");
+    }
+
+    // Tampilkan link lagu jika URL valid.
+    const song = $("#publicSong");
+
+    song.hidden = true;
+    song.removeAttribute("href");
+
+    if (data.song) {
+      try {
+        const songURL = new URL(data.song);
+
+        if (["https:", "http:"].includes(songURL.protocol)) {
+          song.href = songURL.href;
+          song.hidden = false;
+        }
+      } catch {
+        // Link lagu tidak valid, jadi tidak ditampilkan.
+      }
+    }
+
+    document.title =
+      `${data.headline || "A little gift"} — Gifty`;
+
+    window.scrollTo(0, 0);
+  }
+
+  // Mengecek apakah URL berisi data hadiah.
+  function checkGiftURL() {
+    if (!window.location.hash.startsWith("#gift=")) {
+      return;
+    }
+
+    try {
+      const encoded =
+        window.location.hash.slice("#gift=".length);
+
       const data = decodeData(encoded);
 
-      if (!data || typeof data !== "object") {
-        throw new Error("Invalid gift data");
+      // Pastikan data yang dibaca berbentuk objek.
+      if (
+        !data ||
+        typeof data !== "object" ||
+        Array.isArray(data)
+      ) {
+        throw new Error("Data hadiah tidak valid");
       }
 
       showPublicGift(data);
     } catch (error) {
-      showToast("This gift link doesn't seem to work.");
+      showToast(
+        "Link hadiah ini tidak bisa dibuka. Pastikan link tersalin lengkap."
+      );
     }
   }
 
-  /* =========================================
-     CLOSE PUBLIC GIFT
-  ========================================= */
+  // Kembali ke halaman utama.
+  function returnHome() {
+    publicView.classList.remove("show");
+    publicView.hidden = true;
 
-  const closePublic = $("#closePublic");
+    $("#mainContent").hidden = false;
 
-  if (closePublic) {
-    closePublic.addEventListener("click", () => {
-      publicView?.classList.remove("show");
-      document.body.style.overflow = "";
+    document.title = "gifty — make someone's day";
 
-      const mainContent = $("#mainContent");
+    history.replaceState(
+      null,
+      "",
+      window.location.pathname + window.location.search
+    );
 
-      if (mainContent) {
-        mainContent.hidden = false;
-      }
-
-      document.title = "Gifty — Make a little magic";
-      history.replaceState(
-        null,
-        "",
-        window.location.pathname + window.location.search
-      );
-    });
+    window.scrollTo(0, 0);
   }
 
-  /* =========================================
-     INITIALIZE
-  ========================================= */
+  $("#backHome")?.addEventListener("click", returnHome);
 
+  // Tombol untuk membaca kembali hadiah.
+  $("#publicReplay")?.addEventListener("click", () => {
+    $("#publicCard").scrollIntoView({
+      behavior: "smooth",
+      block: "center"
+    });
+
+    showToast("Semoga hadiah kecil ini bikin harimu menyenangkan.");
+  });
+
+  // Jalankan fungsi awal setelah elemen halaman tersedia.
   renderTemplates();
+  updatePreview();
   checkGiftURL();
 })();
