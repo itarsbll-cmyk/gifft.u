@@ -1,4 +1,3 @@
-
 <!doctype html>
 <html lang="id">
 <head>
@@ -7,41 +6,46 @@
   <meta name="theme-color" content="#fff9ef">
   <title>gifty — make someone's day</title>
 
-  <!-- File CSS terpisah -->
+  <!-- Hubungkan file CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="root" id="appRoot">
+  <!-- Halaman utama website -->
+  <main class="root" id="mainContent">
     <div class="wrap">
-
-      <!-- Navbar -->
       <header class="nav">
-        <div class="logo">
-          <span class="logo-icon">✳</span>
-          gifty<span style="color:#c48c2a">.</span>
-        </div>
+        <a class="logo" href="#" aria-label="Gifty beranda">
+          <span class="logo-icon">✳</span> gifty<span class="logo-dot">.</span>
+        </a>
+
         <div class="navright">
-          <button class="navlink" id="howNav">Cara kerja</button>
-          <button class="button" id="createNav">Buat hadiah ↗</button>
+          <button class="navlink" id="howNav" type="button">Cara kerja</button>
+          <button class="button" id="createNav" type="button">Buat hadiah ↗</button>
         </div>
       </header>
 
-      <!-- Hero -->
+      <!-- Bagian pembuka -->
       <section class="hero">
-        <div>
+        <div class="hero-copy">
           <span class="kicker">✦ small gifts, big feelings</span>
           <h1>Make a little<br>magic <em>for them.</em></h1>
           <p>
             Bikin hadiah digital yang terasa personal. Pilih template,
-            tambahkan foto, lagu dan kata-kata kamu, lalu bagikan
-            kejutan kecil itu lewat satu link.
+            tambahkan foto, lagu dan kata-kata kamu, lalu bagikan kejutan
+            kecil itu lewat satu link.
           </p>
+
           <div class="hero-actions">
-            <button class="button" id="browseBtn">Jelajahi template ↓</button>
-            <button class="button secondary" id="surpriseBtn">Pilihkan untukku ✧</button>
+            <button class="button" id="browseBtn" type="button">
+              Jelajahi template ↓
+            </button>
+            <button class="button secondary" id="surpriseBtn" type="button">
+              Pilihkan untukku ✧
+            </button>
           </div>
         </div>
 
+        <!-- Ilustrasi dekoratif -->
         <div class="hero-art" aria-label="Ilustrasi kartu hadiah pastel">
           <div class="art-stack">
             <div class="art-card one"></div>
@@ -54,7 +58,7 @@
       </section>
 
       <!-- Galeri template -->
-      <section id="gallery">
+      <section class="gallery-section" id="gallery">
         <div class="section-head">
           <div>
             <h2>Find your kind of gift.</h2>
@@ -63,21 +67,32 @@
           <span class="pill" id="templateCount">8 TEMPLATES</span>
         </div>
 
-        <div class="filters" id="filters">
-          <button class="filter active" data-filter="all">Semua hadiah</button>
-          <button class="filter" data-filter="love">For someone</button>
-          <button class="filter" data-filter="birthday">Birthday</button>
-          <button class="filter" data-filter="friends">Besties</button>
-          <button class="filter" data-filter="cute">Just because</button>
+        <div class="filters" id="filters" aria-label="Filter template">
+          <button class="filter active" type="button" data-filter="all">
+            Semua hadiah
+          </button>
+          <button class="filter" type="button" data-filter="love">
+            For someone
+          </button>
+          <button class="filter" type="button" data-filter="birthday">
+            Birthday
+          </button>
+          <button class="filter" type="button" data-filter="friends">
+            Besties
+          </button>
+          <button class="filter" type="button" data-filter="cute">
+            Just because
+          </button>
         </div>
 
-        <!-- Kartu template dibuat oleh JavaScript -->
+        <!-- Kartu template dibuat melalui JavaScript -->
         <div class="template-grid" id="templateGrid"></div>
       </section>
 
-      <!-- Cara kerja -->
+      <!-- Penjelasan cara kerja -->
       <section class="how" id="how">
         <h2>Three tiny steps.</h2>
+
         <div class="steps">
           <article class="step">
             <b>01</b>
@@ -92,8 +107,8 @@
             <b>02</b>
             <h3>Isi dengan ceritamu</h3>
             <p>
-              Tambahkan nama, ucapan, foto, dan tautan lagu yang punya
-              arti khusus buat kalian.
+              Tambahkan nama, ucapan, foto, dan tautan lagu yang punya arti
+              khusus buat kalian.
             </p>
           </article>
 
@@ -101,37 +116,42 @@
             <b>03</b>
             <h3>Kirim kejutan</h3>
             <p>
-              Generate link personal dan kirim. Mereka bisa membuka
-              halaman hadiah dari browser mereka.
+              Generate link personal dan kirim. Mereka bisa membuka halaman
+              hadiah dari browser mereka.
             </p>
           </article>
         </div>
       </section>
 
-      <!-- Footer -->
       <footer class="footer">
         <span>© 2026 gifty. Made for the people you love.</span>
         <span>A little corner for thoughtful surprises ✦</span>
       </footer>
-
     </div>
-  </div>
+  </main>
 
-  <!-- Modal editor hadiah -->
+  <!-- Modal untuk membuat hadiah -->
   <div
     class="modal"
     id="editorModal"
     role="dialog"
     aria-modal="true"
     aria-labelledby="editorTitle"
+    aria-hidden="true"
   >
     <div class="modal-box">
       <div class="modal-head">
         <h2 id="editorTitle">Make it yours ✦</h2>
-        <button class="close" id="closeEditor" aria-label="Tutup">×</button>
+        <button
+          class="close"
+          id="closeEditor"
+          type="button"
+          aria-label="Tutup"
+        >×</button>
       </div>
 
       <div class="editor">
+        <!-- Form pembuatan hadiah -->
         <form id="giftForm">
           <div class="form-field">
             <label for="recipient">Nama penerima</label>
@@ -139,12 +159,17 @@
               id="recipient"
               maxlength="70"
               placeholder="Untuk siapa hadiah ini?"
+              required
             >
           </div>
 
           <div class="form-field">
             <label for="sender">Nama pengirim</label>
-            <input id="sender" maxlength="70" placeholder="Dari siapa?">
+            <input
+              id="sender"
+              maxlength="70"
+              placeholder="Dari siapa?"
+            >
           </div>
 
           <div class="form-field">
@@ -153,6 +178,7 @@
               id="headline"
               maxlength="90"
               placeholder="contoh: you're my favorite person"
+              required
             >
           </div>
 
@@ -173,7 +199,8 @@
             <label for="photo">Foto (opsional)</label>
             <input id="photo" type="file" accept="image/*">
             <div class="help">
-              Pilih satu foto. Gunakan ukuran kecil agar link tidak terlalu panjang.
+              Pilih satu foto berukuran maksimal 600 KB agar link tidak
+              terlalu panjang.
             </div>
           </div>
 
@@ -201,7 +228,7 @@
             </select>
           </div>
 
-          <button type="submit" class="button" style="width:100%">
+          <button type="submit" class="button submit-button">
             Generate hadiah &amp; link ↗
           </button>
 
@@ -209,25 +236,45 @@
             Demo ini membuat link dari data yang kamu isi di browser.
             Belum ada akun, database, atau penyimpanan cloud.
           </p>
+
+          <!-- Link muncul setelah hadiah berhasil dibuat -->
+          <div class="link-result" id="linkResult" hidden>
+            <label for="generatedLink">Link hadiah kamu</label>
+            <input id="generatedLink" readonly>
+            <p class="help">
+              Agar bisa dibuka orang lain, website harus sudah
+              dipublikasikan terlebih dahulu.
+            </p>
+          </div>
         </form>
 
         <!-- Preview langsung -->
-        <div>
-          <div class="preview" id="livePreview">
+        <div class="preview-column">
+          <div class="preview-label">Live preview</div>
+
+          <article class="preview" id="livePreview">
             <div class="prev-tag" id="prevTag">a little surprise</div>
             <div class="prev-emoji" id="prevEmoji">🎁</div>
             <h3 id="prevTitle">A little gift for you</h3>
+
+            <img id="prevPhoto" hidden alt="Foto pilihan">
+
             <div class="prev-message" id="prevMessage">
               Your lovely message will appear here.
             </div>
-            <img id="prevPhoto" hidden alt="Foto pilihan">
+
             <div class="prev-sign" id="prevSign">— with love</div>
-          </div>
+          </article>
 
           <div class="modal-actions">
-            <button type="button" class="button secondary" id="previewOpen">
+            <button
+              type="button"
+              class="button secondary"
+              id="previewOpen"
+            >
               Preview hadiah ↗
             </button>
+
             <button
               type="button"
               class="button secondary"
@@ -246,39 +293,47 @@
     </div>
   </div>
 
-  <!-- Halaman hadiah yang dibuka melalui link -->
-  <div class="public-view" id="publicView">
-    <button class="back-home" id="backHome">← ke gifty</button>
+  <!-- Tampilan hadiah ketika link dibuka -->
+  <section class="public-view" id="publicView" hidden>
+    <button class="back-home" id="backHome" type="button">
+      ← ke gifty
+    </button>
 
     <div class="public-inner">
-      <article class="public-card">
+      <article class="public-card" id="publicCard">
         <div class="public-emoji" id="publicEmoji">🎁</div>
         <div class="prev-tag" id="publicTag">A LITTLE SURPRISE</div>
+
+        <p class="public-recipient" id="publicRecipient"></p>
         <h2 id="publicTitle">A little gift for you</h2>
+
         <img id="publicPhoto" hidden alt="Foto hadiah">
-        <p id="publicMessage"></p>
-        <p id="publicSign" style="font-weight:850"></p>
+
+        <p class="public-message" id="publicMessage"></p>
+        <p class="public-sign" id="publicSign"></p>
 
         <a
           id="publicSong"
           target="_blank"
           rel="noopener noreferrer"
-          style="display:none;color:#6d5224;font-weight:850"
+          hidden
         >
           ♫ Dengarkan lagu pilihan ↗
         </a>
 
         <div>
-          <button class="music-btn" id="publicReplay">Baca lagi ✦</button>
+          <button class="music-btn" id="publicReplay" type="button">
+            Baca lagi ✦
+          </button>
         </div>
       </article>
     </div>
-  </div>
+  </section>
 
   <!-- Notifikasi -->
-  <div class="toast" id="toast" role="status"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <!-- File JavaScript terpisah -->
-  <script src="script.js"></script>
+  <!-- Jalankan JavaScript setelah HTML selesai dibaca -->
+  <script src="script.js" defer></script>
 </body>
 </html>
