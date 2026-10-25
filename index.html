@@ -1,0 +1,179 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fff9ef">
+
+  <title>Gifty — A Little Surprise</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+/*header*/
+  <header class="navbar">
+    <a href="#" class="logo">gifty<span>.</span></a>
+
+    <p>A little gift, a lot of feelings.</p>
+  </header>
+
+  /*hero*/
+  <main class="container">
+
+    <section class="hero">
+      <span class="eyebrow">A LITTLE SURPRISE FOR YOU</span>
+
+      <h1>
+        Open a little<br>
+        <span>piece of happiness.</span>
+      </h1>
+
+      <p>
+        Ada sesuatu yang spesial buat kamu.
+        Pilih salah satu kejutan di bawah dan buka hadiahnya!
+      </p>
+
+      <button
+        type="button"
+        class="primary-button"
+        id="startButton"
+      >
+        Buka kejutannya ↓
+      </button>
+    </section>
+
+/*pilihan kejutan*/
+    <section class="surprises" id="surprises">
+
+      <div class="section-heading">
+        <span class="eyebrow">PICK YOUR SURPRISE</span>
+        <h2>What will you open?</h2>
+        <p>Ketuk salah satu untuk melihat isinya.</p>
+      </div>
+
+      <div class="surprise-grid">
+
+/*balon*/
+        <button
+          type="button"
+          class="surprise-card"
+          data-surprise="balloon"
+          aria-label="Pecahkan balon untuk membuka pesan"
+        >
+          <div class="object-scene balloon-scene">
+            <span class="object-emoji balloon">🎈</span>
+
+            <div class="balloon-particles" aria-hidden="true">
+              <span>✦</span>
+              <span>✧</span>
+              <span>✦</span>
+              <span>✧</span>
+            </div>
+          </div>
+
+          <h3>Pop the Balloon</h3>
+          <p>Pecahkan balonnya!</p>
+          <span class="card-hint">Ketuk untuk membuka ↗</span>
+        </button>
+
+/*kado*/
+        <button
+          type="button"
+          class="surprise-card"
+          data-surprise="gift"
+          aria-label="Buka kado untuk melihat hadiah"
+        >
+          <div class="object-scene gift-scene">
+            <span class="gift-lid" aria-hidden="true">🎀</span>
+            <span class="gift-box" aria-hidden="true">🎁</span>
+            <span class="gift-sparkle" aria-hidden="true">✨</span>
+          </div>
+
+          <h3>Open the Gift</h3>
+          <p>Ada sesuatu di dalamnya.</p>
+          <span class="card-hint">Ketuk untuk membuka ↗</span>
+        </button>
+
+      /*love
+        <button
+          type="button"
+          class="surprise-card"
+          data-surprise="heart"
+          aria-label="Tembakkan panah ke hati untuk membuka pesan"
+        >
+          <div class="object-scene heart-scene">
+            <span class="heart-target" aria-hidden="true">💗</span>
+            <span class="heart-arrow" aria-hidden="true">➶</span>
+            <span class="heart-sparkle" aria-hidden="true">✦</span>
+          </div>
+
+          <h3>Hit the Heart</h3>
+          <p>Aim for the heart.</p>
+          <span class="card-hint">Ketuk untuk membuka ↗</span>
+        </button>
+
+      </div>
+    </section>
+
+/*pesan yang muncul*/
+    <section
+      class="message-section"
+      id="messageSection"
+      aria-live="polite"
+      hidden
+    >
+      <div class="message-card">
+
+        <span class="message-decoration" id="messageDecoration">
+          💌
+        </span>
+
+        <span class="eyebrow" id="messageEyebrow">
+          A LITTLE MESSAGE FOR YOU
+        </span>
+
+        <h2 id="messageTitle">
+          Surprise!
+        </h2>
+
+        <p id="messageText">
+          Ada pesan spesial buat kamu.
+        </p>
+
+        <p class="message-signature" id="messageSignature">
+          With love, someone special.
+        </p>
+
+        <button
+          type="button"
+          class="secondary-button"
+          id="closeMessage"
+        >
+          Tutup pesan
+        </button>
+
+      </div>
+    </section>
+
+    /*penutup*/
+    <section class="closing">
+      <span>✿</span>
+      <h2>Made just for you.</h2>
+      <p>Karena hal kecil juga bisa berarti banyak.</p>
+    </section>
+
+  </main>
+
+/*footer*/
+  <footer class="footer">
+    <p>© 2026 gifty. Made with a little love.</p>
+  </footer>
+
+  <!-- Hubungkan file JavaScript -->
+  <script src="script.js"></script>
+
+</body>
+</html>
